@@ -4,26 +4,26 @@ const map = L.map('map', {
     zoomControl: false // Désactive les boutons par défaut
 }).setView([-11.668, 27.482], 16);
 
-// // Déplacement des boutons de zoom à droite
-// L.control.zoom({ 
-//     position: 'topright'
-// }).addTo(map);
+// Déplacement des boutons de zoom à droite
+L.control.zoom({ 
+    position: 'topright'
+}).addTo(map);
 
-// // Fond de carte OSM et ESRI
-// const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', 
-//     {foo: 'bar', 
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// }).addTo(map);
+// Fond de carte OSM et ESRI
+const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', 
+    {foo: 'bar', 
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-// const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-// 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-// });
+const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
 
-// // Creation d'un groupe (Layer control)
-// const baseMap = L.control.layers({
-//     'OpenStreetMap':osm,
-//     'Esri Satellite':Esri_WorldImagery
-// }).addTo(map);
+// Creation d'un groupe (Layer control)
+const baseMap = L.control.layers({
+    'OpenStreetMap':osm,
+    'Esri Satellite':Esri_WorldImagery
+}).addTo(map);
 
 // Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
 var BlocCBD = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
