@@ -42,11 +42,11 @@ var BlocCBD = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms"
 // }).addTo(map);
 
 //Groupe des donnees (cartes)
-const mapGroup = {
-  "Ilot du centre": BlocCBD,
-  "Limite du centre": Limite1979,
-  "Commerces du centre": Inventaire1979
-}
+// const mapGroup = {
+//   "Ilot du centre": BlocCBD,
+//   "Limite du centre": Limite1979,
+//   "Commerces du centre": Inventaire1979
+// }
 
 //Union des deux groupes
 // const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);
