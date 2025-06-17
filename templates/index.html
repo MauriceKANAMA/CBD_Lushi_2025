@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Centre des affaires de Lubumbashi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+  </head>
+  <body>
+
+    <div class="topbar">
+      <h3 class="logo">Centre des affaires de Lubumbashi</h3>
+      <button class="Contact">Contact</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="sidebar">
+      <h3 for="categorie"><strong>Catégories</strong></h3>
+      <select id="categorie" name="categorie">
+        <option value="tous" selected>Tous les commerces</option>
+        <option value="alimentations">Alimentations</option>
+        <option value="equipements">Équipements</option>
+        <option value="habillements">Habillements</option>
+        <option value="hotels">Hôtels - Restaurants - Cafés</option>
+        <option value="loisirs">Loisirs - Luxe - Culture</option>
+        <option value="services">Services</option>
+      </select>
+
+      <h3 for="search"><strong>Rechercher</strong></h3>
+        <input type="text" id="search" name="search" placeholder="Ecrivez le nom du magasin...">
+
+      <h3><strong>Export</strong></h3>
+      <div class="Export">
+        <button>GeoJSON</button>
+        <button>GeoPackage</button>
+      </div>
+
+      <h3><strong>E-mail</strong></h3>
+      <input type="email" value="mauricekanama1@gmail.com">
+
+      <button class="export-btn">Export data</button>
+    </div>
+
+  
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js')}}"></script>
+  </body>
+</html>

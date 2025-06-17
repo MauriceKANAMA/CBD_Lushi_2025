@@ -1,0 +1,222 @@
+body, html {
+  margin: 0;
+  height: 0;
+  font-family: Arial, sans-serif;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Ajustement du bouton de zoom au niveau voulu */
+.leaflet-control-zoom {
+  top: 130px; 
+}
+
+.topbar {
+  position: absolute;
+  top: 10px;
+  left: 45px;
+  width: 90%;
+  height: 50px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.topbar .logo {
+  font-weight: bold;
+  font-size: 20px;
+  align-items: center;
+}
+
+.Contact {
+  background: linear-gradient(45deg, #237bdf, #2fe6ec);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  background: white;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-size: 14px;
+}
+
+.sidebar h3 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.sidebar label {
+  display: block;
+  margin-top: 5px;
+}
+
+.sidebar input[type="email"] {
+  width: 100%;
+  padding: 6px;
+  color: #ccc;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.Export button {
+  margin-right: 8px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: black;
+}
+
+.Export button:hover, .Export .active:hover {
+  background-color: #00d4ff;
+}
+
+.export-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.export-btn:hover{
+  background-color: #00d4ff;
+}
+
+.area-label {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 123, 255, 0.85);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  z-index: 999;
+  font-size: 14px;
+}
+
+#search{
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 6px; 
+  width: 100%; 
+  max-width: 300px; 
+  margin-top: 1px;
+}
+
+#categorie{
+  padding: 6px; 
+  border-radius: 6px; 
+  border: 1px solid #ccc; 
+  width: 100%; 
+  max-width: 300px;
+}
+
+/*Responsive : écran moyen (PC) */
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+  .topbar{
+    font-size: 9px;
+    width: 89%;
+  }
+
+  .sidebar {
+    width: 320px;
+    padding: 15px;
+    font-size: 16px;
+  }
+}
+
+/*Responsive : petit écran (Tablettes) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .topbar{
+    font-size: 9px;
+    width: 83%;
+  }
+
+  .sidebar {
+    width: 25%;
+    left: 5%;
+    top: 80px;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .sidebar h3 {
+    font-size: 12px;
+  }
+
+  .sidebar label {
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  .sidebar input[type="email"] {
+    width: 95%;
+    padding: 6px;
+    color: #ccc;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+}
+
+/*Responsive : petit écran (Telephones) */
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .topbar{
+    width: 77%;
+    font-size: 12px;
+  }
+
+  .sidebar {
+    width: 25%;
+    left: 5%;
+    top: 80px;
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .sidebar h3 {
+    font-size: 14px;
+  }
+
+  .sidebar label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .sidebar input[type="email"] {
+    width: 80%;
+    padding: 6px;
+    color: #ccc;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+}
