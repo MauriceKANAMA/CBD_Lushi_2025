@@ -31,15 +31,15 @@ var BlocCBD = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms"
 }).addTo(map);
 
 // Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
-var Limite1979 = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
-    layers: "LushiCBD1979:Inventaire_1979",
-    transparent: true,
-    format:"image/png"
-}).addTo(map);
+// var Limite1979 = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
+//     layers: "LushiCBD1979:Inventaire_1979",
+//     transparent: true,
+//     format:"image/png"
+// }).addTo(map);
 
-const Inventaire1979 = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
-    layers: "Lushi_CBD:cbdlushi2024",
-}).addTo(map);
+// const Inventaire1979 = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
+//     layers: "Lushi_CBD:cbdlushi2024",
+// }).addTo(map);
 
 //Groupe des donnees (cartes)
 const mapGroup = {
@@ -49,7 +49,7 @@ const mapGroup = {
 }
 
 //Union des deux groupes
-const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);
+// const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);
 
 document.getElementById("categorie").addEventListener("change", function() {
   const selected = this.value;
