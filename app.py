@@ -1,14 +1,19 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from dotenv import load_dotenv, dotenv_values
-from sqlalchemy.exc import OperationalError
+from geoalchemy2 import Geometry
+from dotenv import load_dotenv
 import os
 
 
-# Charge automatiquement le fichier .env
-load_dotenv()  # Par défaut, charge le fichier ".env" à la racine
+# Chargement automatiquement du fichier .env
+load_dotenv()
 
+# Vérification des variables d'environnement requises
+required_env = ['DB_USER', 'DB_PASSWORD', 'DB_HOST', 'DB_PORT', 'DB_NAME']
+for var in required_env:
+    if not os.getenv(var):
+        raise EnvironmentError(f"La variable d'environnement {var} est manquante.")
+    
 # Creation d'une variable de connexion vers notre base de donnees PostgreSQl
 DB_URL = (
     f"postgresql+psycopg2://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
@@ -24,4 +29,4 @@ def homePage():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
