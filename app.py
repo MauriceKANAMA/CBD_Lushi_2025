@@ -34,6 +34,25 @@ class Limites(db.Model):
     geom = db.Column(Geometry('POLYGON', srid=4326))
 
 # ---------------- Inventaire ----------------
+
+#Methode HTTP GET
+@app.route('/api/inventaire', methods=['GET'])
+def get_inventaire():
+    categorie = request.args.get('categorie')
+    query = Inventaire.query
+    if categorie:
+        query = query.filter_by(categorie=categorie)
+    result = []
+    for inv in query.all():
+        # Adapte ceci à ce que tu veux retourner (GeoJSON, ou juste des attributs)
+        result.append({
+            "id": inv.id,
+            "categorie": inv.categorie,
+            # Ajoute d'autres champs si besoin
+        })
+    return jsonify(result)
+
+#Methode HTTP POST
 @app.route('/api/inventaire', methods=['POST'])
 def create_inventaire():
     data = request.get_json()
@@ -46,6 +65,7 @@ def create_inventaire():
     db.session.commit()
     return jsonify({'success': True, 'id': inventaire.id})
 
+#Methode HTTP PUT
 @app.route('/api/inventaire/<int:id>', methods=['PUT'])
 def update_inventaire(id):
     data = request.get_json()
@@ -58,6 +78,7 @@ def update_inventaire(id):
     db.session.commit()
     return jsonify({'success': True})
 
+#Methode HTTP DELETE
 @app.route('/api/inventaire/<int:id>', methods=['DELETE'])
 def delete_inventaire(id):
     inventaire = Inventaire.query.get_or_404(id)
