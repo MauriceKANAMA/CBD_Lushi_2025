@@ -21,11 +21,7 @@ db = SQLAlchemy(app)
 
 @app.route("/")
 def homePage():
-    try:
-        db.session.execute("SELECT 1")
-        return render_template("index.html", status="Connexion réussie ✅")
-    except OperationalError as e:
-        return render_template("index.html", status=f"Erreur : {e}")
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
