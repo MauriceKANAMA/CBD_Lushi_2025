@@ -9,14 +9,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
   </head>
   <body>
-
+    <!--Affichage de la barre de haut-->
     <div class="topbar">
       <h3 class="logo">Centre des affaires de Lubumbashi</h3>
       <button class="Contact">Contact</button>
     </div>
 
+    <!--Affichage de la carte-->
     <div id="map"></div>
 
+    <!--Ajout d'un bouton pour afficher et masquer le menu de gauche-->
+    <button class="toggle-sidebar" aria-label="Afficher/Masquer le menu">☰</button>
+
+    <!--Menu de gauche-->
     <div class="sidebar">
       <h3 for="categorie"><strong>Catégories</strong></h3>
       <select id="categorie" name="categorie">
@@ -29,17 +34,20 @@
         <option value="services">Services</option>
       </select>
 
+      <!--Affichage de la barre de recherche-->
       <h3 for="search"><strong>Rechercher</strong></h3>
         <input type="text" id="search" name="search" placeholder="Ecrivez le nom du magasin...">
 
+      <!--Affichage du bouton de telechargement des donnees-->
       <h3><strong>Export</strong></h3>
       <div class="Export">
         <button>GeoJSON</button>
         <button>GeoPackage</button>
       </div>
 
+      <!--Partie pour renseigner le mail afin d'y envoyer les donnees-->
       <h3><strong>E-mail</strong></h3>
-      <input type="email" value="mauricekanama1@gmail.com">
+      <input id='email' type="email" value="mauricekanama1@gmail.com">
 
       <button class="export-btn">Export data</button>
     </div>
@@ -51,5 +59,13 @@
 
     <script src="{{url_for('static', filename='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename='js/L.Geoserver.js')}}"></script>
+
+    <script>
+    document.querySelector('.toggle-sidebar').addEventListener('click', function () {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('hidden');
+    });
+    </script>
+
   </body>
 </html>
