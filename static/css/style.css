@@ -76,7 +76,7 @@ body, html {
   position: absolute;
   top: 80px;
   left: 20px;
-  background: white;
+  background: rgba(254, 255, 255, 0.3);
   padding: 20px;
   width: 300px;
   border-radius: 10px;
