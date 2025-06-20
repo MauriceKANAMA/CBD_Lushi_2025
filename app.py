@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape
 from shapely.geometry import shape
 from dotenv import load_dotenv
 import os
+
 
 load_dotenv()
 
@@ -17,6 +18,10 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+@app.route('/')
+def homePage():
+    return render_template('index.html')
 
 class Inventaire(db.Model):
     __tablename__ = 'inventaire'
