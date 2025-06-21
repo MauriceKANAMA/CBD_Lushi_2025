@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, requests, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape
@@ -22,6 +22,21 @@ db = SQLAlchemy(app)
 @app.route('/')
 def homePage():
     return render_template('index.html')
+
+@app.route("/wfs_inventaire")
+def wfs_inventaire():
+    # Remplace l’URL par celle de ton GeoServer
+    wfs_url = "http://localhost:8080/geoserver/CBD_2025/ows"
+    params = {
+        "service": "WFS",
+        "version": "1.0.0",
+        "request": "GetFeature",
+        "typeName": "CBD_2025:Inventaire",
+        "maxFeatures": 50,
+        "outputFormat": "application/json"
+    }
+    r = requests.get(wfs_url, params=params)
+    return jsonify(r.json())
 
 class Inventaire(db.Model):
     __tablename__ = 'Inventaire_complet'

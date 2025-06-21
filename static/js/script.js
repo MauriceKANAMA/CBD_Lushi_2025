@@ -2,7 +2,7 @@
 const map = L.map('map', {
     editable: true,
     zoomControl: false // Désactive les boutons par défaut
-}).setView([-11.668, 27.482], 16);
+}).setView([-11.666, 27.482], 15.4);
 
 // Déplacement des boutons de zoom à droite
 L.control.zoom({ 
@@ -26,9 +26,12 @@ const baseMap = L.control.layers({
 }).addTo(map);
 
 // Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
-var BlocCBD = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
-    layers: "LushiCBD1979:Bloc_CBD",
-}).addTo(map);
+// var BlocCBD = L.tileLayer.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
+//     layers: "LushiCBD1979:Bloc_CBD",
+//     format: "image/png",
+//     transparent: true,
+//     attribution: "GeoServer"
+// }).addTo(map);
 
 // Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
 // var Limite1979 = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
@@ -37,10 +40,17 @@ var BlocCBD = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms"
 //     format:"image/png"
 // }).addTo(map);
 
-// const Inventaire1979 = L.Geoserver.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
+// const Inventaire1979 = L.geoJson("http://localhost:8080/geoserver/CBD_2025/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=CBD_2025%3AInventaire&maxFeatures=50&outputFormat=application%2Fjson", {
 //     layers: "Lushi_CBD:cbdlushi2024",
 // }).addTo(map);
 
+// Charger le GeoJSON du backend Flask
+fetch('/wfs_inventaire')
+  .then(response => response.json())
+  .then(data => {
+    L.geoJSON(data).addTo(map);
+  });
+  
 //Groupe des donnees (cartes)
 // const mapGroup = {
 //   "Ilot du centre": BlocCBD,
