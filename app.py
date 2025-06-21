@@ -24,18 +24,24 @@ def homePage():
     return render_template('index.html')
 
 class Inventaire(db.Model):
-    __tablename__ = 'inventaire'
-    id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'Inventaire_complet'
+    id = db.Column('id', db.Integer, primary_key=True)
     geom = db.Column(Geometry('POINT', srid=4326))
-
-class Bloc(db.Model):
-    __tablename__ = 'bloc'
-    id = db.Column(db.Integer, primary_key=True)
-    geom = db.Column(Geometry('POLYGON', srid=4326))
+    Nilots = db.Column('n° ilots', db.String(254))
+    NomEtabliss = db.Column('nom_etabli', db.String(254))
+    Categorie = db.Column('categories', db.String(254))
+    Sous_categorie = db.Column('sous-categ ', db.String(254))
+    Rubriques = db.Column('types_rubr ', db.String(254))
+    Description = db.Column('descriptio', db.String(254))
+    Avenue = db.Column('adresses', db.String(254))
+    Date = db.Column('time', db.String(254))
 
 class Limites(db.Model):
-    __tablename__ = 'limites'
+    __tablename__ = 'Limites_CBD_2025'
     id = db.Column(db.Integer, primary_key=True)
+    Annee = db.Column('annee', db.Integer)
+    Auteur = db.Column('auteur', db.String(254))
+    Surface = db.Column('surface', db.Float(8))
     geom = db.Column(Geometry('POLYGON', srid=4326))
 
 # ---------------- Inventaire ----------------
@@ -91,39 +97,55 @@ def delete_inventaire(id):
     db.session.commit()
     return jsonify({'success': True})
 
-# ---------------- Bloc ----------------
-@app.route('/api/bloc', methods=['POST'])
-def create_bloc():
-    data = request.get_json()
-    geom_geojson = data.get('geometry')
-    if not geom_geojson:
-        return jsonify({'error': 'Aucune géométrie fournie'}), 400
-    geom_shape = shape(geom_geojson)
-    bloc = Bloc(geom=from_shape(geom_shape, srid=4326))
-    db.session.add(bloc)
-    db.session.commit()
-    return jsonify({'success': True, 'id': bloc.id})
+# # ---------------- Bloc ----------------
+# @app.route('/api/bloc', methods=['POST'])
+# def create_bloc():
+#     data = request.get_json()
+#     geom_geojson = data.get('geometry')
+#     if not geom_geojson:
+#         return jsonify({'error': 'Aucune géométrie fournie'}), 400
+#     geom_shape = shape(geom_geojson)
+#     bloc = Bloc(geom=from_shape(geom_shape, srid=4326))
+#     db.session.add(bloc)
+#     db.session.commit()
+#     return jsonify({'success': True, 'id': bloc.id})
 
-@app.route('/api/bloc/<int:id>', methods=['PUT'])
-def update_bloc(id):
-    data = request.get_json()
-    bloc = Bloc.query.get_or_404(id)
-    geom_geojson = data.get('geometry')
-    if not geom_geojson:
-        return jsonify({'error': 'Aucune géométrie fournie'}), 400
-    geom_shape = shape(geom_geojson)
-    bloc.geom = from_shape(geom_shape, srid=4326)
-    db.session.commit()
-    return jsonify({'success': True})
+# @app.route('/api/bloc/<int:id>', methods=['PUT'])
+# def update_bloc(id):
+#     data = request.get_json()
+#     bloc = Bloc.query.get_or_404(id)
+#     geom_geojson = data.get('geometry')
+#     if not geom_geojson:
+#         return jsonify({'error': 'Aucune géométrie fournie'}), 400
+#     geom_shape = shape(geom_geojson)
+#     bloc.geom = from_shape(geom_shape, srid=4326)
+#     db.session.commit()
+#     return jsonify({'success': True})
 
-@app.route('/api/bloc/<int:id>', methods=['DELETE'])
-def delete_bloc(id):
-    bloc = Bloc.query.get_or_404(id)
-    db.session.delete(bloc)
-    db.session.commit()
-    return jsonify({'success': True})
+# @app.route('/api/bloc/<int:id>', methods=['DELETE'])
+# def delete_bloc(id):
+#     bloc = Bloc.query.get_or_404(id)
+#     db.session.delete(bloc)
+#     db.session.commit()
+#     return jsonify({'success': True})
 
 # ---------------- Limites ----------------
+@app.route('/api/inventaire', methods=['GET'])
+def get_limites():
+    categorie = request.args.get('limites')
+    query = Inventaire.query
+    if categorie:
+        query = query.filter_by(categorie=categorie)
+    result = []
+    for inv in query.all():
+        # Adapte ceci à ce que tu veux retourner (GeoJSON, ou juste des attributs)
+        result.append({
+            "id": inv.id,
+            "categorie": inv.limites,
+            # Ajoute d'autres champs si besoin
+        })
+    return jsonify(result)
+
 @app.route('/api/limites', methods=['POST'])
 def create_limites():
     data = request.get_json()
