@@ -112,20 +112,27 @@ body, html {
   margin-top: 1px;
 }
 
-
-
-.sidebar label {
-  display: block;
-  margin-top: 5px;
+.search-container {
+  position: relative;
+  width: 95%;
 }
 
-.sidebar input[type="email"] {
+.search-container input[type="text"] {
   width: 100%;
-  padding: 6px;
-  color: #ccc;
-  margin-top: 5px;
+  padding: 8px 32px 8px 12px; /* espace pour l’icône à droite */
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 4px;
+}
+
+.search-container .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* empêche le clic sur l’icône */
+  font-size: 10px;
+  color: #667;
 }
 
 /* ASPECTS RESPONSIVES DE LA PAGE */

@@ -25,16 +25,37 @@ const baseMap = L.control.layers({
     'Esri Satellite':Esri_WorldImagery
 }).addTo(map);
 
+//AJOUT DE NOS COUCHES 
+// const Inventaire = L.geoJSON(
+
+// ).bindPopup(function (layer) {
+//   return layer.feature.properties.City;
+// }).addTo(map);
+
+fetch("http://localhost:8080/geoserver/tiger/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tiger%3Agiant_polygon&maxFeatures=50&outputFormat=application%2Fjson")
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    L.geoJSON(data).bindPopup((layer) => {
+            return `City: ${layer.feature.properties.City},<br>
+            Population: ${layer.feature.properties.Population}`}).addTo(map);
+    })
+    .catch((error) => {
+        console.log(`This is the error: ${error}`)
+  })
 
 //Union des deux groupes
 // const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);
 
-document.getElementById("categorie").addEventListener("change", function() {
+
+// Parametre de la recherche par categories
+const categorie = document.getElementById("categorie").addEventListener("change", function() {
   const selected = this.value;
     console.log("Catégorie choisie :", selected);
 });
 
-//Paarametres du toggle-sidebar
+//Parametres du toggle-sidebar
 const toogle = document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.querySelector('.toggle-sidebar');
     const sidebar = document.querySelector('.sidebar');
