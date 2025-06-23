@@ -25,38 +25,6 @@ const baseMap = L.control.layers({
     'Esri Satellite':Esri_WorldImagery
 }).addTo(map);
 
-// Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
-// var BlocCBD = L.tileLayer.wms("http://localhost:8080/geoserver/LushiCBD1979/wms", {
-//     layers: "LushiCBD1979:Bloc_CBD",
-//     format: "image/png",
-//     transparent: true,
-//     attribution: "GeoServer"
-// }).addTo(map);
-
-// Ajout de nos couches sous forme des services WMS (GetCapabilities) depuis Geoserver
-// var Limite1979 = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
-//     layers: "LushiCBD1979:Inventaire_1979",
-//     transparent: true,
-//     format:"image/png"
-// }).addTo(map);
-
-// const Inventaire1979 = L.geoJson("http://localhost:8080/geoserver/CBD_2025/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=CBD_2025%3AInventaire&maxFeatures=50&outputFormat=application%2Fjson", {
-//     layers: "Lushi_CBD:cbdlushi2024",
-// }).addTo(map);
-
-// Charger le GeoJSON du backend Flask
-fetch('/wfs_inventaire')
-  .then(response => response.json())
-  .then(data => {
-    L.geoJSON(data).addTo(map);
-  });
-  
-//Groupe des donnees (cartes)
-// const mapGroup = {
-//   "Ilot du centre": BlocCBD,
-//   "Limite du centre": Limite1979,
-//   "Commerces du centre": Inventaire1979
-// }
 
 //Union des deux groupes
 // const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);
@@ -65,3 +33,22 @@ document.getElementById("categorie").addEventListener("change", function() {
   const selected = this.value;
     console.log("Catégorie choisie :", selected);
 });
+
+//Paarametres du toggle-sidebar
+// const toggle = document.querySelector('.toggle-sidebar').addEventListener('click', function () {
+//       const sidebar = document.querySelector('.sidebar');
+//       sidebar.classList.toggle('hidden');
+//     });
+
+document.addEventListener('click', function () {
+    const toggleButton = document.querySelector('.toggle-sidebar');
+    const sidebar = document.querySelector('.sidebar');
+
+    // Cacher la sidebar au chargement
+    sidebar.classList.add('hidden');
+
+    // Gérer l'affichage lors du clic
+    toggleButton.addEventListener('click', function () {
+      sidebar.classList.toggle('hidden');
+    });
+  });

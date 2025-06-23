@@ -1,9 +1,10 @@
-from flask import Flask, requests, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape
 from shapely.geometry import shape
 from dotenv import load_dotenv
+import requests
 import os
 
 
