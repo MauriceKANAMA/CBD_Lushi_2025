@@ -26,24 +26,9 @@ const baseMap = L.control.layers({
 }).addTo(map);
 
 //AJOUT DE NOS COUCHES 
-// const Inventaire = L.geoJSON(
-
-// ).bindPopup(function (layer) {
-//   return layer.feature.properties.City;
-// }).addTo(map);
-
-fetch("http://localhost:8080/geoserver/tiger/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tiger%3Agiant_polygon&maxFeatures=50&outputFormat=application%2Fjson")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    L.geoJSON(data).bindPopup((layer) => {
-            return `City: ${layer.feature.properties.City},<br>
-            Population: ${layer.feature.properties.Population}`}).addTo(map);
-    })
-    .catch((error) => {
-        console.log(`This is the error: ${error}`)
-  })
+var Inventaire = L.Geoserver.wms("http://localhost:8080/geoserver/CBD_2025/wms", {
+  layers: "CBD_2025:Inventaire",
+}).addTo(map);
 
 //Union des deux groupes
 // const layers = L.control.layers(baseMap, mapGroup, {collapsed: true}).addTo(map);

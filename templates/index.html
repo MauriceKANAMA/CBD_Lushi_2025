@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
-    <!-- Ajoute de Leaflet.draw pour l'edition des couches -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   </head>
   <body>
     <!--Affichage de la barre de haut-->
@@ -50,6 +47,9 @@
     <script src="{{ url_for('static', filename='js/script.js')}}"></script>
     <script src="{{ url_for('static', filename='js/leaflet-commande.js')}}"></script>
     
+    <!-- jQuery et Geoserver -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/L.Geoserver.js') }}"></script>
 
   </body>
 </html>
