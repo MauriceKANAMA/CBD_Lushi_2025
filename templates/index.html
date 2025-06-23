@@ -14,7 +14,7 @@
   <body>
     <!--Affichage de la barre de haut-->
     <div class="topbar">
-      <h3 class="logo">Centre des affaires de Lubumbashi</h3>
+      <h2 class="name">Centre des affaires de Lubumbashi</h2>
       <button class="Contact">Contact</button>
     </div>
 
@@ -41,21 +41,8 @@
       <h3><strong>Rechercher</strong></h3>
         <input type="text" id="search" name="search" placeholder="Ecrivez le nom du magasin...">
 
-      <!--Affichage du bouton de telechargement des donnees-->
-      <h3><strong>Export</strong></h3>
-      <div class="Export">
-        <button id="btnGeoJSON" type="button">GeoJSON</button>
-        <button id="btnGeoPackage" type="button">GeoPackage</button>
-      </div>
-
-      <!--Partie pour renseigner le mail afin d'y envoyer les donnees-->
-      <h3><strong>E-mail</strong></h3>
-      <input type="email" id='email' name="email" placeholder="mauricekanama1@gmail.com">
-
-      <button class="export-btn">Export data</button>
     </div>
 
-  
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="{{ url_for('static', filename='js/script.js')}}"></script>
     <script src="{{ url_for('static', filename='js/leaflet-commande.js')}}"></script>
