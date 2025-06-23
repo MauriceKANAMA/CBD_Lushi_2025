@@ -35,12 +35,7 @@ document.getElementById("categorie").addEventListener("change", function() {
 });
 
 //Paarametres du toggle-sidebar
-// const toggle = document.querySelector('.toggle-sidebar').addEventListener('click', function () {
-//       const sidebar = document.querySelector('.sidebar');
-//       sidebar.classList.toggle('hidden');
-//     });
-
-document.addEventListener('click', function () {
+const toogle = document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.querySelector('.toggle-sidebar');
     const sidebar = document.querySelector('.sidebar');
 

@@ -11,6 +11,48 @@ body, html {
   z-index: 1;
 }
 
+/* LES PARAMETRES DE LA BARRE DE HAUT */
+
+/* Ajustement du bouton de zoom au niveau voulu */
+.leaflet-control-zoom {
+  top: 130px; 
+}
+
+/* Parametre de la barre de haut */
+.topbar {
+  position: absolute;
+  top: 10px;
+  left: 45px;
+  width: 90%;
+  height: 50px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Parametre du texte de la barre de haut */
+.topbar .logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Parametre du boutton contact en haut a droite sur la barre de haut */
+.Contact {
+  background: linear-gradient(45deg, #237bdf, #2fe6ec);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* LES PARAMETRES DE LA BARRE DE GAUCHE */
+
 /*Configuration du sidebar*/
 .toggle-sidebar {
   position: absolute;
@@ -31,52 +73,10 @@ body, html {
   display: none;
 }
 
-
-/* Ajustement du bouton de zoom au niveau voulu */
-.leaflet-control-zoom {
-  top: 130px; 
-}
-
-.topbar {
-  position: absolute;
-  top: 10px;
-  left: 45px;
-  width: 90%;
-  height: 50px;
-  background: white;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.topbar .logo {
-  font-weight: bold;
-  font-size: 20px;
-  align-items: center;
-}
-
-.Contact {
-  background: linear-gradient(45deg, #237bdf, #2fe6ec);
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-#email{
-  width: 95%;
-}
-
 .sidebar {
   position: absolute;
   top: 80px;
   left: 20px;
-  display: none;
   background: rgba(254, 255, 255, 0.3);
   padding: 20px;
   width: 300px;
@@ -85,11 +85,31 @@ body, html {
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   font-size: 14px;
 }
-
+/* Barre categorie */
 .sidebar h3 {
   margin-top: 5px;
   margin-bottom: 10px;
 }
+
+#categorie{
+  padding: 6px; 
+  border-radius: 6px; 
+  border: 1px solid #ccc; 
+  width: 100%; 
+  max-width: 300px;
+}
+
+/* Bare de recherche */
+#search{
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 6px;
+  width: 95%; 
+  max-width: 300px; 
+  margin-top: 1px;
+}
+
+
 
 .sidebar label {
   display: block;
@@ -103,6 +123,10 @@ body, html {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 6px;
+}
+
+#email{
+  width: 95%;
 }
 
 .Export button {
@@ -148,22 +172,7 @@ body, html {
   font-size: 14px;
 }
 
-#search{
-  padding: 8px; 
-  border: 1px solid #ccc; 
-  border-radius: 6px;
-  width: 95%; 
-  max-width: 300px; 
-  margin-top: 1px;
-}
-
-#categorie{
-  padding: 6px; 
-  border-radius: 6px; 
-  border: 1px solid #ccc; 
-  width: 100%; 
-  max-width: 300px;
-}
+/* ASPECTS RESPONSIVES DE LA PAGE */
 
 /*Responsive : écran moyen (PC) */
 @media screen and (min-width: 1024px) and (max-width: 1440px) {
