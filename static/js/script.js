@@ -46,37 +46,51 @@ const toogle = document.addEventListener('DOMContentLoaded', function () {
 });
 
 //AJOUT DE NOS COUCHES 
-const wfsUrl = "http://localhost:8080/geoserver/CBD_2025/ows?" +
-  "service=WFS&version=1.0.0&request=GetFeature" +
-  "&typeName=CBD_2025:Inventaire" +
-  "&maxFeatures=50&outputFormat=application/json";
+// const wfsUrl = "http://localhost:8080/geoserver/CBD_2025/ows?" +
+//   "service=WFS&version=1.0.0&request=GetFeature" +
+//   "&typeName=CBD_2025:Inventaire" +
+//   "&maxFeatures=50&outputFormat=application/json";
 
-fetch(wfsUrl)
-  .then(response => response.json())
-  .then(data => {
-    const inventaireLayer = L.geoJSON(data, {
-      onEachFeature: function (feature, layer) {
-        if (feature.properties) {
-          const nom = feature.properties.nom || "Inconnu";
-          const categorie = feature.properties.categorie || "Non définie";
-          layer.bindPopup(`<strong>${nom}</strong><br>Catégorie : ${categorie}`);
-        }
-      },
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-          radius: 6,
-          fillColor: "#2c7bb6",
-          color: "#fff",
-          weight: 1,
-          opacity: 1,
-          fillOpacity: 0.8
-        });
-      }
-    });
+// fetch(wfsUrl)
+//   .then(response => response.json())
+//   .then(data => {
+//     const inventaireLayer = L.geoJSON(data, {
+//       onEachFeature: function (feature, layer) {
+//         if (feature.properties) {
+//           const nom = feature.properties.nom || "Inconnu";
+//           const categorie = feature.properties.categorie || "Non définie";
+//           layer.bindPopup(`<strong>${nom}</strong><br>Catégorie : ${categorie}`);
+//         }
+//       },
+//       pointToLayer: function (feature, latlng) {
+//         return L.circleMarker(latlng, {
+//           radius: 6,
+//           fillColor: "#2c7bb6",
+//           color: "#fff",
+//           weight: 1,
+//           opacity: 1,
+//           fillOpacity: 0.8
+//         });
+//       }
+//     });
 
-    inventaireLayer.addTo(map);
-  })
-  .catch(error => {
-    console.error("Erreur lors du chargement WFS GeoJSON :", error);
-  });
+//     inventaireLayer.addTo(map);
+//   })
+//   .catch(error => {
+//     console.error("Erreur lors du chargement WFS GeoJSON :", error);
+//   });
 
+var wfsLayerAdvance = L.Geoserver.wfs("http://localhost:8080/geoserver/CBD_2025/wms", {
+  layers: "	CBD_2025:Inventaire",
+  style: {
+    color: "black",
+    fillOpacity: "0",
+    opacity: "0.5",
+  },
+  onEachFeature: function (feature, layer) {
+    layer.bindPopup("this is popuped");
+  },
+});
+
+map.fitBounds(wfsLayerAdvance.getBounds());
+wfsLayerAdvance.addTo(map);
