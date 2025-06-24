@@ -2,7 +2,7 @@
 const map = L.map('map', {
     editable: true,
     zoomControl: false // Désactive les boutons par défaut
-}).setView([-11.666, 27.482], 15.4);
+}).setView([-11.665, 27.486], 15.4);
 
 // Déplacement des boutons de zoom à droite
 L.control.zoom({ 
@@ -46,51 +46,48 @@ const toogle = document.addEventListener('DOMContentLoaded', function () {
 });
 
 //AJOUT DE NOS COUCHES 
-// const wfsUrl = "http://localhost:8080/geoserver/CBD_2025/ows?" +
-//   "service=WFS&version=1.0.0&request=GetFeature" +
-//   "&typeName=CBD_2025:Inventaire" +
-//   "&maxFeatures=50&outputFormat=application/json";
 
-// fetch(wfsUrl)
-//   .then(response => response.json())
-//   .then(data => {
-//     const inventaireLayer = L.geoJSON(data, {
-//       onEachFeature: function (feature, layer) {
-//         if (feature.properties) {
-//           const nom = feature.properties.nom || "Inconnu";
-//           const categorie = feature.properties.categorie || "Non définie";
-//           layer.bindPopup(`<strong>${nom}</strong><br>Catégorie : ${categorie}`);
-//         }
-//       },
-//       pointToLayer: function (feature, latlng) {
-//         return L.circleMarker(latlng, {
-//           radius: 6,
-//           fillColor: "#2c7bb6",
-//           color: "#fff",
-//           weight: 1,
-//           opacity: 1,
-//           fillOpacity: 0.8
-//         });
-//       }
-//     });
+// Chargement des données WFS GeoJSON pour l'inventaire
+const Inventaire = "http://localhost:8080/geoserver/CBD_2025/ows?" +
+  "service=WFS&version=1.0.0&request=GetFeature" +
+  "&typeName=CBD_2025:Inventaire" +
+  "&maxFeatures=2560&outputFormat=application/json";
 
-//     inventaireLayer.addTo(map);
-//   })
-//   .catch(error => {
-//     console.error("Erreur lors du chargement WFS GeoJSON :", error);
-//   });
+fetch(Inventaire)
+  .then(response => response.json())
+  .then(data => {
+    const inventaireLayer = L.geoJSON(data, {
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          const nom = feature.properties.nom_etabli || "Inconnu";
+          const categorie = feature.properties.categories || "Non définie";
+          const sousCategorie = feature.properties.sous-categorie || "Non définie";
+          const Rubrique = feature.properties.types_rubr || "Non définie";
+          const description = feature.properties.descriptio || "Aucune description disponible";
+          const adresse = feature.properties.adresses || "Aucune adresse disponible";
+          layer.bindPopup(
+            `<strong>Nom</strong> : ${nom}` +  
+            `<br><strong>Catégorie</strong> : ${categorie}` +
+            `<br><strong>Sous-catégorie</strong> : ${sousCategorie}` +
+            `<br><strong>Rubrique</strong> : ${Rubrique}` +
+            `<br><strong>Description</strong> : ${description}` +
+            `<br><strong>Adresse</strong> : Avenue ${adresse}` +
+            `<br><strong>Coordonnées</strong> : ${feature.geometry.coordinates}`
+          );
+        }
+      },
+      pointToLayer: function (feature, latlng) {
+        const customIcon = L.icon({
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png', // ou ton propre fichier
+          iconSize: [5, 5],       // ← 🎯 change la taille ici
+          iconAnchor: [20, 60],     // ← le point d'accroche (bas du pic)
+          popupAnchor: [0, -60]     // ← où apparaît le popup par rapport à l'icône
+        });
 
-var wfsLayerAdvance = L.Geoserver.wfs("http://localhost:8080/geoserver/CBD_2025/wms", {
-  layers: "	CBD_2025:Inventaire",
-  style: {
-    color: "black",
-    fillOpacity: "0",
-    opacity: "0.5",
-  },
-  onEachFeature: function (feature, layer) {
-    layer.bindPopup("this is popuped");
-  },
-});
-
-map.fitBounds(wfsLayerAdvance.getBounds());
-wfsLayerAdvance.addTo(map);
+        return L.marker(latlng);
+      }
+    }).addTo(map);
+  })
+  .catch(error => {
+    console.error("Erreur lors du chargement WFS GeoJSON :", error);
+  });

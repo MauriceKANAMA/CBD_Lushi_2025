@@ -24,12 +24,7 @@ db = SQLAlchemy(app)
 def homePage():
     return render_template('index.html')
 
-@app.route('/proxy-wfs')
-def proxy_wfs():
-    geoserver_url = "http://localhost:8080/geoserver/CBD_2025/ows"
-    params = request.args
-    r = requests.get(geoserver_url, params=params)
-    return Response(r.content, mimetype=r.headers.get('Content-Type', 'application/xml'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
