@@ -7,14 +7,7 @@
 
     <!-- Link CSS realiser -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-
-    
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}"> 
 
   </head>
   <body>
@@ -34,7 +27,7 @@
     <div class="sidebar">
       <h3><strong>Catégories</strong></h3>
       <select id="categorie" name="categorie">
-        <option value="" selected>-- Choisir une catégorie --</option>
+        <option value="" selected>-- Choisis une catégorie --</option>
         <option value="Alimentation">Alimentations</option>
         <option value="Equipements">Équipements</option>
         <option value="Habillement">Habillements</option>
@@ -50,6 +43,10 @@
         <span class="search-icon">🔍</span>
       </div>
 
+      <!-- Liste dynamique des recherches -->
+       <ul id="searchResults" class="search-results"></ul>
+
+      <!-- Boutton de reinitialisation des options de recherches -->
       <button id="resetFilters" class="reset-button">Réinitialiser les filtres</button>
 
     </div>
