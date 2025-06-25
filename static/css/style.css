@@ -51,7 +51,7 @@ body, html {
   cursor: pointer;
 }
 
-/* LES PARAMETRES DE LA BARRE DE GAUCHE */
+/* LES STYLE DE LA BARRE DE GAUCHE */
 
 /*Configuration du sidebar ou barre de gauche*/
 .toggle-sidebar {
@@ -81,7 +81,7 @@ body, html {
   left: 20px;
   background: rgba(254, 255, 255, 0.3);
   padding: 20px;
-  width: 300px;
+  width: 100px;
   border-radius: 10px;
   z-index: 999;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -170,6 +170,76 @@ body, html {
 
 .reset-button:hover {
   background-color: #d32f2f;
+}
+
+
+
+/* LES STYLES DE LA BARRE DE DROITE */
+.right-tools {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  height: auto;
+  width: 100px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px 0 0 10px;
+  z-index: 999;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+/* Quand rétracté */
+.right-tools.collapsed {
+  width: 40px; /* Ne cache que le contenu, pas le bouton */
+}
+
+/* Contenu des outils à masquer dans le mode réduit */
+.right-content {
+  transition: opacity 0.3s ease;
+}
+
+.right-tools.collapsed .right-content {
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ZOOM */
+.zoom-controls {
+  display: flex;
+  flex-direction: column; /* ✅ Empile verticalement */
+  align-items: center; /* ✅ Aligne à gauche */
+}
+
+.zoom-controls button {
+  margin: 2px; /* ✅ Espacement vertical */
+  padding: 1px;
+  font-size: 12px;
+  border: none;
+  background-color: rgba(137, 110, 211, 0.5);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 30px; /* largeur uniforme */
+}
+
+.zoom-controls button:hover {
+  background-color: #60a9f1;
+}
+
+/* Fonds  de carte */
+.basemap-switcher {
+  margin-top: 0;
+}
+
+.basemap-switcher select {
+  font-size: 10px;
+  width: 100%;
+  padding: 2px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 

@@ -11,6 +11,8 @@
 
   </head>
   <body>
+
+    <!-- BARRE HORIZONTAL EN HAUT -->
     <!--Affichage de la barre de haut-->
     <div class="topbar">
       <h2 class="name">Centre des affaires de Lubumbashi</h2>
@@ -20,6 +22,7 @@
     <!--Affichage de la carte-->
     <div id="map"></div>
 
+    <!-- SIDEBAR DE GAUCHE -->
     <!--Ajout d'un bouton pour afficher et masquer le menu de gauche-->
     <button class="toggle-sidebar" aria-label="Afficher/Masquer le menu">☰</button>
 
@@ -51,6 +54,32 @@
 
     </div>
 
+
+    <!-- SIDEBAR DE DROITE -->
+    <div class="right-tools" id="rightSidebar">
+      <button id="toggleRightSidebar" class="toggle-right-sidebar">❯</button>
+
+      <div class="right-content">
+        <div id="customZoom" class="zoom-controls">
+          <button id="zoomIn">➕</button>
+          <button id="zoomOut">➖</button>
+        </div>
+
+        <div class="basemap-switcher">
+          <h5>Fond de carte</h5>
+          <select id="baseLayerSelect">
+            <option value="osm">OpenStreetMap</option>
+            <option value="esri">Esri Satellite</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- LIEN JavaScripts -->
     <!-- Lien avec les fichiers JavaScript -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>

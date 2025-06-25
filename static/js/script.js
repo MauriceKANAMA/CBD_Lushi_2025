@@ -5,11 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
       zoomControl: false // Désactive les boutons par défaut
   }).setView([-11.665, 27.486], 15.4);
 
-  // Déplacement des boutons de zoom à droite
-  L.control.zoom({ 
-      position: 'topright'
-  }).addTo(map);
-
   // Fond de carte OSM et ESRI
   const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', 
       {foo: 'bar', 
@@ -19,12 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
   });
-
-  // Creation d'un groupe (Layer control)
-  const baseMap = L.control.layers({
-      'OpenStreetMap':osm,
-      'Esri Satellite':Esri_WorldImagery
-  }).addTo(map);
 
   //Parametres du toggle-sidebar
   const toogle = document.addEventListener('DOMContentLoaded', function () {
@@ -86,8 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       });
     }
-
-
 
     const coucheGeoJSON = L.geoJSON(dataFiltrée, {
       onEachFeature: function (feature, layer) {
@@ -180,8 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-
   // EVENEMENTS POUR LA RECHERCHE ET LE FILTRAGE
   // Utilisation du select HTML pour la recherche par catégorie
   document.getElementById("categorie").addEventListener("change", function () {
@@ -209,6 +194,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("searchResults").innerHTML = "";
   });
+
+  // SCRIPTS DE LA BARRE DE DROITE
+  // Gérer les boutons zoom
+  document.getElementById("zoomIn").addEventListener("click", function () {
+    map.zoomIn();
+  });
+
+  document.getElementById("zoomOut").addEventListener("click", function () {
+    map.zoomOut();
+  });
+
+  // Gérer le fond de carte
+  document.getElementById("baseLayerSelect").addEventListener("change", function () {
+    const value = this.value;
+    if (value === "osm") {
+      map.removeLayer(Esri_WorldImagery);
+      map.addLayer(osm);
+    } else if (value === "esri") {
+      map.removeLayer(osm);
+      map.addLayer(Esri_WorldImagery);
+    }
+  });
+
+  // GESTION DU BOUTON DE LA BARRE DE DROITE
+  document.getElementById("toggleRightSidebar").addEventListener("click", function () {
+    const sidebar = document.getElementById("rightSidebar");
+
+    sidebar.classList.toggle("collapsed");
+
+    // Changer l'icône du bouton
+    this.textContent = sidebar.classList.contains("collapsed") ? "❮" : "❯";
+  });
+
 
 
 });
