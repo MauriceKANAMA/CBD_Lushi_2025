@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    
+
+
   </head>
   <body>
     <!--Affichage de la barre de haut-->
@@ -27,13 +34,13 @@
     <div class="sidebar">
       <h3><strong>Catégories</strong></h3>
       <select id="categorie" name="categorie">
-        <option value="tous" selected>Tous les commerces</option>
-        <option value="alimentations">Alimentations</option>
-        <option value="equipements">Équipements</option>
-        <option value="habillements">Habillements</option>
-        <option value="hotels">Hôtels - Restaurants - Cafés</option>
-        <option value="loisirs">Loisirs - Luxe - Culture</option>
-        <option value="services">Services</option>
+        <option value="" selected>-- Choisir une catégorie --</option>
+        <option value="Alimentation">Alimentations</option>
+        <option value="Equipements">Équipements</option>
+        <option value="Habillement">Habillements</option>
+        <option value="Hôtels - Restaurants - Cafés">Hôtels - Restaurants - Cafés</option>
+        <option value="Loisirs - Luxe - Culture">Loisirs - Luxe - Culture</option>
+        <option value="Services">Services</option>
       </select>
 
       <!--Affichage de la barre de recherche-->
@@ -43,10 +50,13 @@
         <span class="search-icon">🔍</span>
       </div>
 
+      <button id="resetFilters" class="reset-button">Réinitialiser les filtres</button>
+
     </div>
 
     <!-- Lien avec les fichiers JavaScript -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script src="{{ url_for('static', filename='js/script.js')}}"></script>
 
   </body>
