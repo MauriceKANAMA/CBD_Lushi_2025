@@ -30,11 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   //AJOUT DE NOS COUCHES 
-  // Chargement des données WFS GeoJSON pour l'inventaire
+  //Chargement des données WFS GeoJSON pour l'inventaire
   const Inventaire = "http://localhost:8080/geoserver/CBD_2025/ows?" +
     "service=WFS&version=1.0.0&request=GetFeature" +
     "&typeName=CBD_2025:Inventaire" +
     "&maxFeatures=2560&outputFormat=application/json";
+
+  // Appel de la donnee par API Rest GET declarer dans le code flask python
+  // const Inventaire = "/api/inventaire/geojson";
 
   let allFeatures = []; // Pour stocker toutes les entités initiales
   let markers = L.layerGroup(); // Cluster global
@@ -227,6 +230,127 @@ document.addEventListener("DOMContentLoaded", function () {
     this.textContent = sidebar.classList.contains("collapsed") ? "❮" : "❯";
   });
 
+
+  // SCRIPTS POUR API REST 
+  // Ajout d'un point grace a l'API Rest Post
+  document.getElementById("addPointBtn").addEventListener("click", function () {
+    alert("Cliquez sur la carte pour ajouter un nouveau point.");
+    
+    map.once("click", function (e) {
+      const latlng = e.latlng;
+
+      const formHtml = `
+        <form id="addForm">
+          <label>Nom :</label><br>
+          <input type="text" id="nom" name="nom" required><br>
+
+          <label>Catégorie :</label><br>
+          <input type="text" id="categorie" name="categorie"><br>
+
+          <label>Sous-catégorie :</label><br>
+          <input type="text" id="sous-categ" name="sous_categ"><br>
+
+          <label>Rubriques :</label><br>
+          <input type="text" id="types_rubr" name="types_rubr"><br>
+
+          <label>Description :</label><br>
+          <textarea id="descriptio" name="descriptio"></textarea><br>
+
+          <label>Adresse (Avenue) :</label><br>
+          <input type="text" id="adresses" name="adresses"><br>
+
+          <label>Date :</label><br>
+          <input type="date" id="time" name="time" required><br>
+          
+          <button type="submit">✅ Valider</button>
+        </form>
+      `;
+
+      const popup = L.popup()
+        .setLatLng(latlng)
+        .setContent(formHtml)
+        .openOn(map);
+
+      setTimeout(() => {
+        const form = document.getElementById("addForm");
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          
+          const newPoint = {
+            geom: { lat: latlng.lat, lng: latlng.lng },
+            NomEtabliss: document.getElementById("nom").value,
+            Categorie: document.getElementById("categorie").value,
+            Sous_categorie: document.getElementById("sous-categ").value,
+            Rubriques: document.getElementById("types_rubr").value,
+            Description: document.getElementById("descriptio").value,
+            Avenue: document.getElementById("adresses").value,
+            Date: document.getElementById("time").value,
+          };
+
+          fetch("/api/inventaire", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newPoint)
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert("✅ Point ajouté avec succès !");
+            map.closePopup();
+            location.reload();
+          })
+          .catch(err => {
+            console.error("Erreur :", err);
+            alert("❌ Erreur lors de l'ajout.");
+          });
+        });
+      }, 100); // attend que le DOM du popup soit chargé
+    });
+  });
+
+
+  // Ajout d'un point grace a l'API Rest Put
+  document.getElementById("editPointBtn").addEventListener("click", function () {
+    alert("Cliquez sur un point pour modifier.");
+
+    map.eachLayer(layer => {
+      if (layer.feature && layer.feature.properties.id) {
+        layer.on("click", function () {
+          const props = layer.feature.properties;
+          const id = props.id;
+
+          const nouveauNom = prompt("Nouveau nom ?", props.nom_etabli);
+          if (!nouveauNom) return;
+
+          const latlng = layer.getLatLng();
+
+          const updatedPoint = {
+            geom: { lat: latlng.lat, lng: latlng.lng },
+            NomEtabliss: nouveauNom,
+            Sous_categorie: nouveauNom,
+            Rubriques: nouveauNom,
+            Description: nouveauNom,
+            Avenue: nouveauNom,
+            Date: nouvelleDate,
+          };
+
+          fetch(`/api/inventaire/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedPoint)
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert("Point mis à jour !");
+            location.reload();
+          })
+          .catch(err => {
+            console.error("Erreur :", err);
+            alert("Erreur lors de la modification.");
+          });
+        });
+      }
+    });
+  });
 
 
 });

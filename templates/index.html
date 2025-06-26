@@ -42,7 +42,7 @@
       <!--Affichage de la barre de recherche-->
       <h3><strong>Recherche</strong></h3>
       <div class="search-container">
-        <input type="text" id="search" name="search" placeholder="Ecrivez le nom du magasin...">
+        <input type="text" id="search" name="search" placeholder="Ecrivez un nom (magasin, avenue, etc.)" aria-label="Rechercher un lieu" autocomplete="off">
         <span class="search-icon">🔍</span>
       </div>
 
@@ -60,18 +60,26 @@
       <button id="toggleRightSidebar" class="toggle-right-sidebar">❯</button>
 
       <div class="right-content">
+        <!-- BOutons de zoom -->
         <div id="customZoom" class="zoom-controls">
           <button id="zoomIn">➕</button>
           <button id="zoomOut">➖</button>
         </div>
 
+        <!-- Boutons des fonds des cartes -->
         <div class="basemap-switcher">
-          <h5>Fond de carte</h5>
           <select id="baseLayerSelect">
             <option value="osm">OpenStreetMap</option>
             <option value="esri">Esri Satellite</option>
           </select>
         </div>
+        <div class="editing-tools">
+        
+        <!-- Bouton pour la modification des donnees -->
+          <button id="addPointBtn">➕ Ajouter un point</button>
+          <button id="editPointBtn">✏️ Modifier un point</button>
+        </div>
+
       </div>
     </div>
 

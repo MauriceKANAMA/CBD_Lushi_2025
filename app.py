@@ -112,14 +112,19 @@ def add_inventaire():
     
     return jsonify(serialize_inventaire(item)), 201
 
-
-# Creation des routes Rest DELETE pour l'inventaire
-@app.route('/api/inventaire/<int:item_id>', methods=['DELETE'])
-def delete_inventaire(item_id):
+# Creation des routes Rest PUT pour l'inventaire
+@app.route('/api/inventaire/<int:item_id>', methods=['PUT'])
+def update_inventaire(item_id):
     item = Inventaire.query.get_or_404(item_id)
-    db.session.delete(item)
+    data = request.get_json()
+
+    point = from_shape(Point(data['geom']['lng'], data['geom']['lat']), srid=4326)
+    item.geom = point
+    item.NomEtabliss = data.get('NomEtabliss', item.NomEtabliss)
+    # mets à jour les autres champs si nécessaires
+
     db.session.commit()
-    return jsonify({'message': 'Item supprimé'})
+    return jsonify(serialize_inventaire(item))
 
 # Route pour la page d'accueil
 @app.route('/')
