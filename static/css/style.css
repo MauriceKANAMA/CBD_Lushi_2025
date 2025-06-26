@@ -231,15 +231,33 @@ body, html {
 
 /* Fonds  de carte */
 .basemap-switcher {
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 .basemap-switcher select {
-  font-size: 10px;
+  font-size: 12px;
   width: 100%;
   padding: 2px;
   border-radius: 5px;
   border: 1px solid #ccc;
+}
+
+.editing-tools button {
+  margin: 5px;
+  padding: 6px;
+  width: 35px;
+  height: 35px;
+  font-size: 16px;
+  flex-direction: column;
+  background-color: rgba(137, 110, 211, 0.5);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editing-tools button:hover {
+  background-color: #60a9f1;
 }
 
 

@@ -5,6 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
       zoomControl: false // Désactive les boutons par défaut
   }).setView([-11.665, 27.486], 15.4);
 
+  // GESTION DE LA BARRE GAUCHE
+  const toggleButton = document.querySelector('.toggle-sidebar');
+  const sidebar = document.querySelector('.sidebar');
+
+  // Cacher la sidebar au chargement
+  sidebar.classList.add('hidden');
+
+  // Gérer l'affichage lors du clic
+  toggleButton.addEventListener('click', function () {
+    sidebar.classList.toggle('hidden');
+  });
+
   // Fond de carte OSM et ESRI
   const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', 
       {foo: 'bar', 
@@ -13,20 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-  });
-
-  //Parametres du toggle-sidebar
-  const toogle = document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.querySelector('.toggle-sidebar');
-    const sidebar = document.querySelector('.sidebar');
-
-    // Cacher la sidebar au chargement
-    sidebar.classList.add('hidden');
-
-    // Gérer l'affichage lors du clic
-    toggleButton.addEventListener('click', function () {
-      sidebar.classList.toggle('hidden');
-    });
   });
 
   //AJOUT DE NOS COUCHES 
@@ -261,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           <label>Date :</label><br>
           <input type="date" id="time" name="time" required><br>
-          
+
           <button type="submit">✅ Valider</button>
         </form>
       `;
@@ -330,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Rubriques: nouveauNom,
             Description: nouveauNom,
             Avenue: nouveauNom,
-            Date: nouvelleDate,
+            Date: nouveauNom,
           };
 
           fetch(`/api/inventaire/${id}`, {
