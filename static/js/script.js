@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const Inventaire = "http://localhost:8080/geoserver/CBD_2025/ows?" +
     "service=WFS&version=1.0.0&request=GetFeature" +
     "&typeName=CBD_2025:Inventaire" +
-    "&maxFeatures=2560&outputFormat=application/json";
+    "&maxFeatures=25&outputFormat=application/json";
 
   // Appel de la donnee par API Rest GET declarer dans le code flask python
   // const Inventaire = "/api/inventaire/geojson";
@@ -176,6 +176,14 @@ document.addEventListener("DOMContentLoaded", function () {
     afficherFeaturesFiltrées(selectedCategorie, termeRecherche);
   });
 
+  document.getElementById("zoomExtentBtn").addEventListener("click", function () {
+    if (markers.getLayers().length > 0) {
+      map.fitBounds(markers.getBounds(), { padding: [30, 30] });
+    } else {
+      alert("Aucun point à afficher.");
+    }
+  });
+
   // Utilisation du boutton HTML pour la recherche
   document.getElementById("search").addEventListener("input", function () {
     const termeRecherche = this.value;
@@ -194,7 +202,43 @@ document.addEventListener("DOMContentLoaded", function () {
     afficherFeaturesFiltrées("", "");
 
     document.getElementById("searchResults").innerHTML = "";
+
+    // Appliquer un zoom étendu sur tous les points affichés
+    setTimeout(() => {
+      if (markers.getLayers().length > 0) {
+        map.fitBounds(markers.getBounds());
+      }
+    }, 300); // délai pour attendre le rendu
   });
+
+  const baseLayerBtn = document.getElementById("baseLayerBtn");
+  const basemapMenu = document.getElementById("basemapMenu");
+
+  // Toggle du menu fond de carte
+  baseLayerBtn.addEventListener("click", function () {
+    basemapMenu.classList.toggle("hidden");
+  });
+
+  // Sélection du fond de carte
+  basemapMenu.addEventListener("click", function (e) {
+    if (e.target.tagName === 'LI') {
+      const selectedLayer = e.target.getAttribute("data-layer");
+      console.log("Changer de fond de carte vers :", selectedLayer);
+      // TODO : logique pour changer la couche selon `selectedLayer`
+      basemapMenu.classList.add("hidden");
+    }
+  });
+
+  // Fermer si on clique ailleurs
+  document.addEventListener("click", function (e) {
+    if (!baseLayerBtn.contains(e.target) && !basemapMenu.contains(e.target)) {
+      basemapMenu.classList.add("hidden");
+    }
+  });
+
+  
+
+
 
   // SCRIPTS DE LA BARRE DE DROITE
   // Gérer les boutons zoom
@@ -221,12 +265,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // GESTION DU BOUTON DE LA BARRE DE DROITE
   document.getElementById("toggleRightSidebar").addEventListener("click", function () {
     const sidebar = document.getElementById("rightSidebar");
+    const icon = this.querySelector("i");
 
     sidebar.classList.toggle("collapsed");
-
-    // Changer l'icône du bouton
-    this.textContent = sidebar.classList.contains("collapsed") ? "❮" : "❯";
+    icon.className = sidebar.classList.contains("collapsed") ? "fas fa-angle-right" : "fas fa-angle-left";
   });
+
 
 
   // SCRIPTS POUR API REST 

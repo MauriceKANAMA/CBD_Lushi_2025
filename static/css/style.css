@@ -51,7 +51,7 @@ body, html {
   cursor: pointer;
 }
 
-/* LES STYLE DE LA BARRE DE GAUCHE */
+/* LES STYLES DE LA BARRE DE GAUCHE */
 
 /*Configuration du sidebar ou barre de gauche*/
 .toggle-sidebar {
@@ -175,93 +175,127 @@ body, html {
 
 
 /* LES STYLES DE LA BARRE DE DROITE */
+/* Configuration de la barre de droite */
 .right-tools {
   position: absolute;
-  top: 80px;
+  top: 70px;
   right: 0;
-  height: auto;
-  width: 100px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px 0 0 10px;
+  width: 30px;
+  border-left: none; /* on enlève la bordure */
+  box-shadow: none; /* on enlève les ombres */
   z-index: 999;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-  transition: width 0.3s ease;
-  overflow: hidden;
+  padding: 10px;
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-/* Quand rétracté */
-.right-tools.collapsed {
-  width: 40px; /* Ne cache que le contenu, pas le bouton */
+/* Configuration generale des boutons de droite */
+.right-tools button {
+  background: white;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Contenu des outils à masquer dans le mode réduit */
+.right-tools button:hover {
+  background: #e0e0e0;
+}
+
+.right-tools > div {
+  margin-bottom: 10px;
+}
+
+
+/* Comment le contenu de droite doit s'afficher */
 .right-content {
-  transition: opacity 0.3s ease;
-}
-
-.right-tools.collapsed .right-content {
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 /* ZOOM */
 .zoom-controls {
   display: flex;
-  flex-direction: column; /* ✅ Empile verticalement */
-  align-items: center; /* ✅ Aligne à gauche */
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* plus de séparation entre les boutons */
+  margin-bottom: 10px; /* petit espacement avec le bloc suivant */
 }
 
-.zoom-controls button {
-  margin: 2px; /* ✅ Espacement vertical */
-  padding: 1px;
-  font-size: 12px;
-  border: none;
-  background-color: rgba(137, 110, 211, 0.5);
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 30px; /* largeur uniforme */
-}
-
-.zoom-controls button:hover {
-  background-color: #60a9f1;
+.editing-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px; /* aucun espace entre les deux boutons */
 }
 
 /* Fonds  de carte */
-.basemap-switcher {
-  margin-top: 10px;
-}
-
-.basemap-switcher select {
-  font-size: 12px;
-  width: 100%;
-  padding: 2px;
-  border-radius: 5px;
+.basemap-menu {
+  background-color: #fff;
   border: 1px solid #ccc;
+  border-radius: 4px;
+  list-style: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  padding: 5px 0;
 }
 
-.editing-tools button {
-  margin: 5px;
-  padding: 6px;
-  width: 35px;
-  height: 35px;
-  font-size: 16px;
-  flex-direction: column;
-  background-color: rgba(137, 110, 211, 0.5);
-  color: white;
-  border: none;
-  border-radius: 4px;
+.basemap-menu li {
+  padding: 8px 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 
-.editing-tools button:hover {
-  background-color: #60a9f1;
+.basemap-menu li:hover {
+  background-color: #f5f5f5;
 }
 
+.hidden {
+  display: none;
+}
 
-/* ASPECTS RESPONSIVES DE LA PAGE */
+.basemap-switcher {
+  position: relative;
+}
+
+.basemap-menu {
+  position: absolute;
+  top: 40px; /* décalé sous l'icône */
+  right: 0;
+  z-index: 999;
+  width: max-content;
+}
+
+/* Affichage d'un apercu des noms des icons de la barre de droite */
+.right-tools.collapsed button[title]::after {
+  content: attr(title);
+  position: absolute;
+  right: 50px;
+  background: rgba(132, 151, 155, 0.8);
+  color: white;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.right-tools.collapsed button[title]:hover::after {
+  opacity: 1;
+}
+
+/* ASPECTS RESPONSIFS DE LA PAGE */
 
 /*Responsive : écran moyen (PC) */
 @media screen and (min-width: 1024px) and (max-width: 1440px) {
