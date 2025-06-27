@@ -27,6 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
   });
 
+  // Sélection du fond de carte
+  basemapMenu.addEventListener("click", function () {
+    if (selectedLayer === "osm") {
+      map.removeLayer(Esri_WorldImagery);
+      map.addLayer(osm);
+    } else if (selectedLayer === "esri") {
+      map.removeLayer(osm);
+      map.addLayer(Esri_WorldImagery);
+    }
+  });
+
   //AJOUT DE NOS COUCHES 
   //Chargement des données WFS GeoJSON pour l'inventaire
   const Inventaire = "http://localhost:8080/geoserver/CBD_2025/ows?" +
@@ -96,6 +107,80 @@ document.addEventListener("DOMContentLoaded", function () {
             `<br><strong>Adresse</strong> : Avenue ${adresse}` +
             `<br><strong>Coordonnées</strong> : ${feature.geometry.coordinates}`
           );
+
+          layer.on("click", function () {
+            if (!modificationActive) return; // Si on n’est pas en mode édition, on ignore le clic
+
+            const props = feature.properties;
+            const id = props.id;
+            const latlng = layer.getLatLng();
+
+            const formHtml = `
+              <form id="editForm">
+                <label>Nom :</label><br>
+                <input type="text" id="editNom" value="${props.nom_etabli || ''}"><br>
+
+                <label>Catégorie :</label><br>
+                <input type="text" id="editCategorie" value="${props.categories || ''}"><br>
+
+                <label>Sous-catégorie :</label><br>
+                <input type="text" id="editSousCateg" value="${props['sous-categorie'] || ''}"><br>
+
+                <label>Rubriques :</label><br>
+                <input type="text" id="editRubr" value="${props.types_rubr || ''}"><br>
+
+                <label>Description :</label><br>
+                <textarea id="editDesc">${props.description || ''}</textarea><br>
+
+                <label>Avenue :</label><br>
+                <input type="text" id="editAdresse" value="${props.adresses || ''}"><br>
+
+                <label>Date :</label><br>
+                <input type="date" id="editDate" value="${props.time || ''}"><br>
+
+                <button type="submit">✅ Modifier</button>
+              </form>
+            `;
+
+            const popup = L.popup()
+              .setLatLng(latlng)
+              .setContent(formHtml)
+              .openOn(map);
+
+            setTimeout(() => {
+              document.getElementById("editForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const updatedPoint = {
+                  geom: { lat: latlng.lat, lng: latlng.lng },
+                  NomEtabliss: document.getElementById("editNom").value,
+                  Categorie: document.getElementById("editCategorie").value,
+                  Sous_categorie: document.getElementById("editSousCateg").value,
+                  Rubriques: document.getElementById("editRubr").value,
+                  Description: document.getElementById("editDesc").value,
+                  Avenue: document.getElementById("editAdresse").value,
+                  Date: document.getElementById("editDate").value,
+                };
+
+                fetch(`/api/inventaire/${id}`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(updatedPoint)
+                })
+                .then(res => res.json())
+                .then(data => {
+                  alert("✅ Point modifié avec succès !");
+                  modificationActive = false;
+                  map.closePopup();
+                  location.reload();
+                })
+                .catch(err => {
+                  console.error("Erreur :", err);
+                  alert("❌ Erreur lors de la modification.");
+                });
+              });
+            }, 100);
+          });
         }
       },
       pointToLayer: function (feature, latlng) {
@@ -176,13 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
     afficherFeaturesFiltrées(selectedCategorie, termeRecherche);
   });
 
-  document.getElementById("zoomExtentBtn").addEventListener("click", function () {
-    if (markers.getLayers().length > 0) {
-      map.fitBounds(markers.getBounds(), { padding: [30, 30] });
-    } else {
-      alert("Aucun point à afficher.");
-    }
-  });
 
   // Utilisation du boutton HTML pour la recherche
   document.getElementById("search").addEventListener("input", function () {
@@ -211,21 +289,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300); // délai pour attendre le rendu
   });
 
-  const baseLayerBtn = document.getElementById("baseLayerBtn");
-  const basemapMenu = document.getElementById("basemapMenu");
-
-  // Toggle du menu fond de carte
-  baseLayerBtn.addEventListener("click", function () {
-    basemapMenu.classList.toggle("hidden");
+  // Basemap switching logic
+  document.getElementById("baseLayerBtn").addEventListener("click", function () {
+    document.getElementById("basemapMenu").classList.toggle("hidden");
   });
 
-  // Sélection du fond de carte
-  basemapMenu.addEventListener("click", function (e) {
+  document.getElementById("basemapMenu").addEventListener("click", function (e) {
     if (e.target.tagName === 'LI') {
       const selectedLayer = e.target.getAttribute("data-layer");
-      console.log("Changer de fond de carte vers :", selectedLayer);
-      // TODO : logique pour changer la couche selon `selectedLayer`
-      basemapMenu.classList.add("hidden");
+
+      if (selectedLayer === "osm") {
+        map.removeLayer(Esri_WorldImagery);
+        map.addLayer(osm);
+      } else if (selectedLayer === "esri") {
+        map.removeLayer(osm);
+        map.addLayer(Esri_WorldImagery);
+      }
+
+      document.getElementById("basemapMenu").classList.add("hidden");
     }
   });
 
@@ -250,63 +331,48 @@ document.addEventListener("DOMContentLoaded", function () {
     map.zoomOut();
   });
 
-  // Gérer le fond de carte
-  document.getElementById("baseLayerSelect").addEventListener("change", function () {
-    const value = this.value;
-    if (value === "osm") {
-      map.removeLayer(Esri_WorldImagery);
-      map.addLayer(osm);
-    } else if (value === "esri") {
-      map.removeLayer(osm);
-      map.addLayer(Esri_WorldImagery);
-    }
-  });
-
-  // GESTION DU BOUTON DE LA BARRE DE DROITE
-  document.getElementById("toggleRightSidebar").addEventListener("click", function () {
-    const sidebar = document.getElementById("rightSidebar");
-    const icon = this.querySelector("i");
-
-    sidebar.classList.toggle("collapsed");
-    icon.className = sidebar.classList.contains("collapsed") ? "fas fa-angle-right" : "fas fa-angle-left";
-  });
-
-
 
   // SCRIPTS POUR API REST 
   // Ajout d'un point grace a l'API Rest Post
   document.getElementById("addPointBtn").addEventListener("click", function () {
-    alert("Cliquez sur la carte pour ajouter un nouveau point.");
-    
+    // Affiche la modale
+    document.getElementById("modalAddPoint").classList.remove("hidden");
+
+    // Gère le clic sur "Fermer"
+    document.getElementById("closeAddPointModalBtn").addEventListener("click", function () {
+      document.getElementById("modalAddPoint").classList.add("hidden");
+    });
+
     map.once("click", function (e) {
       const latlng = e.latlng;
 
       const formHtml = `
         <form id="addForm">
           <label>Nom :</label><br>
-          <input type="text" id="nom" name="nom" required><br>
+          <input type="text" id="nom" required><br>
 
           <label>Catégorie :</label><br>
-          <input type="text" id="categorie" name="categorie"><br>
+          <input type="text" id="categorie_form"><br>
 
           <label>Sous-catégorie :</label><br>
-          <input type="text" id="sous-categ" name="sous_categ"><br>
+          <input type="text" id="sous-categ"><br>
 
           <label>Rubriques :</label><br>
-          <input type="text" id="types_rubr" name="types_rubr"><br>
+          <input type="text" id="types_rubr"><br>
 
           <label>Description :</label><br>
-          <textarea id="descriptio" name="descriptio"></textarea><br>
+          <textarea id="descriptio"></textarea><br>
 
           <label>Adresse (Avenue) :</label><br>
-          <input type="text" id="adresses" name="adresses"><br>
+          <input type="text" id="adresses"><br>
 
           <label>Date :</label><br>
-          <input type="date" id="time" name="time" required><br>
+          <input type="date" id="time" required><br>
 
           <button type="submit">✅ Valider</button>
         </form>
       `;
+
 
       const popup = L.popup()
         .setLatLng(latlng)
@@ -350,10 +416,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
+  let modificationActive = false;
+
   // Ajout d'un point grace a l'API Rest Put
   document.getElementById("editPointBtn").addEventListener("click", function () {
-    alert("Cliquez sur un point pour modifier.");
+    modificationActive = true; // Active le mode modification
+    // Affiche la modale
+    document.getElementById("modalMessage").classList.remove("hidden");
 
+    // Ferme la modale si on clique sur "fermer"
+    document.getElementById("closeModalBtn").addEventListener("click", function () {
+      document.getElementById("modalMessage").classList.add("hidden");
+      modificationActive = false; // Désactive le mode modification
+    });
+
+    // Ensuite, active le clic sur les points
     map.eachLayer(layer => {
       if (layer.feature && layer.feature.properties.id) {
         layer.on("click", function () {
@@ -394,5 +471,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // ZOOM ÉTENDU - Corrigé
+  document.getElementById("zoomExtentBtn").addEventListener("click", function () {
+    const bounds = markers.getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    } else {
+      alert("❌ Aucun point affiché pour effectuer un zoom étendu.");
+    }
+  });
 
 });
