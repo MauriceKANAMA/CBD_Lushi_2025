@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const map = L.map('map', {
       editable: true,
       zoomControl: false // Désactive les boutons par défaut
-  }).setView([-11.665, 27.486], 15.4);
+  }).setView([-11.6634, 27.485], 15.4);
 
   // GESTION DE LA BARRE GAUCHE
   const toggleButton = document.querySelector('.toggle-sidebar');
@@ -121,8 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `<br><strong>Sous-catégorie</strong> : ${sousCategorie}` +
             `<br><strong>Rubrique</strong> : ${Rubrique}` +
             `<br><strong>Description</strong> : ${description}` +
-            `<br><strong>Adresse</strong> : Avenue ${adresse}` +
-            `<br><strong>Coordonnées</strong> : ${feature.geometry.coordinates}`
+            `<br><strong>Adresse</strong> : Avenue ${adresse}`
           );
 
           layer.on("click", function () {
