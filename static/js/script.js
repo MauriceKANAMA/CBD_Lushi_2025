@@ -43,7 +43,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const Inventaire = "http://localhost:8080/geoserver/CBD_2025/ows?" +
     "service=WFS&version=1.0.0&request=GetFeature" +
     "&typeName=CBD_2025:Inventaire" +
-    "&maxFeatures=25&outputFormat=application/json";
+    "&maxFeatures=2554&outputFormat=application/json";
+
+  // Affichage du spinner lors du chargement des données
+  function showSpinner() {
+    document.getElementById("spinner").classList.remove("hidden");
+  }
+
+  function hideSpinner() {
+    document.getElementById("spinner").classList.add("hidden");
+  }
+
 
   // Appel de la donnee par API Rest GET declarer dans le code flask python
   // const Inventaire = "/api/inventaire/geojson";
@@ -51,18 +61,25 @@ document.addEventListener("DOMContentLoaded", function () {
   let allFeatures = []; // Pour stocker toutes les entités initiales
   let markers = L.layerGroup(); // Cluster global
 
+  showSpinner(); // Spinner ON
+
   fetch(Inventaire)
     .then(response => response.json())
     .then(data => {
-      allFeatures = data.features; // Stocke toutes les entités
-      afficherFeaturesFiltrées(""); // Affiche tout par défaut
+      allFeatures = data.features;
+      afficherFeaturesFiltrées(""); // Rendu des entités
     })
     .catch(error => {
       console.error("Erreur lors du chargement WFS GeoJSON :", error);
+    })
+    .finally(() => {
+      hideSpinner(); // Toujours arrêter le spinner à la fin
     });
+
 
   // Fonction pour le filtrage des entités pour la selection par categorie et recherche par nom
   function afficherFeaturesFiltrées(categorieFiltre, termeRecherche = "") {
+    showSpinner(); // Debut du chargement
     markers.clearLayers();
 
     let dataFiltrée = allFeatures;
@@ -199,6 +216,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     markers.addLayer(coucheGeoJSON);
     map.addLayer(markers);
+
+    markers.addLayer(coucheGeoJSON);
+    map.addLayer(markers);
+
+    hideSpinner(); // Fin du chargement
   }
 
   function mettreAJourListeResultats(termeRecherche, categorieFiltre) {
@@ -283,8 +305,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Appliquer un zoom étendu sur tous les points affichés
     setTimeout(() => {
-      if (markers.getLayers().length > 0) {
-        map.fitBounds(markers.getBounds());
+      let bounds2;
+      markers.eachLayer(layer => {
+        if (!bounds2) {
+          bounds2 = layer.getBounds ? layer.getBounds() : L.latLngBounds(layer.getLatLng());
+        } else {
+          bounds2.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+        }
+      });
+      if (bounds2 && bounds2.isValid()) {
+        map.fitBounds(bounds2, { padding: [30, 30] });
+      } else {
+        alert("❌ Aucun point affiché pour effectuer un zoom étendu.");
       }
     }, 300); // délai pour attendre le rendu
   });
