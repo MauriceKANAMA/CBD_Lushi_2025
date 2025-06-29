@@ -473,12 +473,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ZOOM ÉTENDU - Corrigé
   document.getElementById("zoomExtentBtn").addEventListener("click", function () {
-    const bounds = markers.getBounds();
-    if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [30, 30] });
+  let bounds;
+
+  markers.eachLayer(layer => {
+    if (!bounds) {
+      bounds = layer.getBounds ? layer.getBounds() : L.latLngBounds(layer.getLatLng());
     } else {
-      alert("❌ Aucun point affiché pour effectuer un zoom étendu.");
+      bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
     }
   });
+
+  if (bounds && bounds.isValid()) {
+    map.fitBounds(bounds, { padding: [30, 30] });
+  } else {
+    alert("❌ Aucun point affiché pour effectuer un zoom étendu.");
+  }
+});
+
 
 });

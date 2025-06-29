@@ -12,6 +12,9 @@
     <!-- Ajout d'une adresse afin de personnaliser mes icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- Ajout du plugin leaflet GL -->
+    <!-- <script src="https://unpkg.com/leaflet.glify/dist/glify.min.js"></script> -->
+
   </head>
   <body>
 
@@ -73,7 +76,7 @@
 
         <!-- Bouton pour zoom étendu -->
         <div class="zoom-extent">
-          <button id="zoomExtentBtn" title="Vue d'ensemble"><i class="fas fa-expand"></i></button>
+          <button id="zoomExtentBtn" title="Vue d'ensemble"><i class="fas fa-home"></i></button>
         </div>
 
 
@@ -119,8 +122,8 @@
     <!-- LIEN JavaScripts -->
     <!-- Lien avec les fichiers JavaScript -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script src="{{ url_for('static', filename='js/script.js')}}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/leaflet_webgl_app.js')}}"></script> -->
 
   </body>
 </html>
